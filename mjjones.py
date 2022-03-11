@@ -124,4 +124,5 @@ class Point:
 game = Board(2,2)
 # Run the game
 game.run_game()
-print("hello")
+print("hello there")
+print("yasss")
