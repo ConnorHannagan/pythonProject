@@ -27,18 +27,24 @@ class Deck:
     def shuffle(self):
         random.shuffle(self.cards)
     def getcard(self, position):
-        if position == 1:
-            return position.self.cards
-        if position > 1:
-            if position.self.cards.known == False:
-                return False
-            else:
-                return position.self.cards
+        return self.cards[position]
+        # if position == 0:
+        #     return position.self.cards
+        # if position > 0:
+        #     if position.self.cards.known == False:
+        #         return False
+        #     else:
+        #         return position.self.cards
+    def add(self, card):
+        self.cards.append(card)
+        return()
 
     def print(self):
         for i in self.cards:
             print(i.value(), i.suit(), i.colour())
 
+    def getl(self):
+        return len(self.cards)
 
 drawdeck = Deck()
 drawdeck.create()
@@ -48,6 +54,8 @@ for i in range(7):
     board.append(Deck())
 for i in range(7):
     for b in range(7):
+        if b >= i:
+            board[b].add(drawdeck.getcard(0))
+for i in range(7):
+    print(board[i].getl())
 
-
-print(drawdeck.getcard(1).val)
