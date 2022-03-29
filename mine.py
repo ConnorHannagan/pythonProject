@@ -32,9 +32,9 @@ class Deck:
         else:
             temp = self.cards[position]
             if temp.val() < 10:
-                temp = " [ " + str(temp.val()) + "  ]"
+                temp = " [ " + str(temp.suit()) + str(temp.val()) + "  ]"
             else:
-                temp = " [ " + str(temp.val()) + " ]"
+                temp = " [ " + str(temp.suit()) + str(temp.val()) + " ]"
             return temp
 
     def getcard(self, position):
