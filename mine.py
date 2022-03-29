@@ -28,7 +28,7 @@ class Deck:
         random.shuffle(self.cards)
     def veiwcard(self,position):
         if position > len(self.cards)-1:
-            return " "
+            return "  "
         else:
             temp = self.cards[position]
             if temp.val() < 10:
