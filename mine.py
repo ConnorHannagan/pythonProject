@@ -28,13 +28,13 @@ class Deck:
         random.shuffle(self.cards)
     def veiwcard(self,position):
         if position > len(self.cards)-1:
-            return "  "
+            return "       "
         else:
             temp = self.cards[position]
             if temp.val() < 10:
-                temp = "0" + str(temp.val())
+                temp = " [ " + str(temp.val()) + "  ]"
             else:
-                temp = temp.val()
+                temp = " [ " + str(temp.val()) + " ]"
             return temp
 
     def getcard(self, position):
@@ -42,7 +42,7 @@ class Deck:
             return " "
         else:
             temp = self.cards[position]
-            self.cards.pop(0)
+            self.cards.pop(position)
             return temp
         # if position == 0:
         #     return position.self.cards
