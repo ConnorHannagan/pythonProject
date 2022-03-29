@@ -26,8 +26,24 @@ class Deck:
                 self.cards.append(Card(i+1, a))
     def shuffle(self):
         random.shuffle(self.cards)
+    def veiwcard(self,position):
+        if position > len(self.cards)-1:
+            return " "
+        else:
+            temp = self.cards[position]
+            if temp.val() < 10:
+                temp = "0" + str(temp.val())
+            else:
+                temp = temp.val()
+            return temp
+
     def getcard(self, position):
-        return self.cards[position]
+        if position > len(self.cards):
+            return " "
+        else:
+            temp = self.cards[position]
+            self.cards.pop(0)
+            return temp
         # if position == 0:
         #     return position.self.cards
         # if position > 0:
@@ -53,9 +69,25 @@ board = []
 for i in range(7):
     board.append(Deck())
 for i in range(7):
-    for b in range(7):
+    for b in range(7): #creates 7 decks to start off with
         if b >= i:
             board[b].add(drawdeck.getcard(0))
+
+
 for i in range(7):
-    print(board[i].getl())
+    print(board[0].veiwcard(i),board[1].veiwcard(i),board[2].veiwcard(i),board[3].veiwcard(i),board[4].veiwcard(i),board[5].veiwcard(i), board[6].veiwcard(i))
+
+
+
+
+# for i in range(7):
+#     row = []
+#     for a in range(7):
+#         temp = board[a].getcard(i-1)
+#         if temp == " ":
+#             row.append("")
+#         else:
+#             row.append(temp.val())
+#     print(row)
+
 
