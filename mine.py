@@ -11,8 +11,15 @@ class Card:
             self.colour = "red"
 
 
-    def val(self):
-        return self.value
+    def val(self,number):
+        if number == True:
+            return self.value
+        else:
+            if self.value > 10:
+                special = ["J","Q","K"]
+                return special[self.value-11]
+            else:
+                return self.value
 
     def suite(self):
         return self.suit
@@ -47,10 +54,10 @@ class Deck:
         elif self.cards[position].known == True:
                 temp = self.cards[position]
 
-                if temp.val() < 10:
-                    temp = " [ " + temp.suite() + str(temp.val()) + "  ]"
+                if temp.val(True) != 10:
+                    temp = " [ " + temp.suite() + str(temp.val(False)) + "  ]"
                 else:
-                    temp = " [ " + temp.suite() + str(temp.val()) + " ]"
+                    temp = " [ " + temp.suite() + str(temp.val(False)) + " ]"
                 return temp
         else:
             return " [ xxx ]"
@@ -76,7 +83,7 @@ class Deck:
 
     def print(self):
         for i in self.cards:
-            print(i.value(), i.suit(), i.colour())
+            print(i.value(False), i.suit(), i.colour())
 
     def getl(self):
         return len(self.cards)
