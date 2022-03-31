@@ -53,7 +53,7 @@ class Deck:
                     temp = " [ " + temp.suite() + str(temp.val()) + " ]"
                 return temp
         else:
-            return " [     ]"
+            return " [ xxx ]"
 
     def getcard(self, position):
         if position > len(self.cards):
@@ -85,7 +85,7 @@ class Deck:
         self.cards[len(self.cards)-1].flip()
 
 
-def displayboard():
+def displayboard(board):
     for i  in range(7):
         print(board[0].veiwcard(i),board[1].veiwcard(i),board[2].veiwcard(i),board[3].veiwcard(i),board[4].veiwcard(i),board[5].veiwcard(i), board[6].veiwcard(i))
 
@@ -93,20 +93,24 @@ def fliptop():
     for i in range(7):
         board[i].flip()
 
+def createboard(board, drawdeck):
 
-create board
-drawdeck = Deck()
-drawdeck.create()
+
+    for i in range(7): #populates the Board array with our decks
+        board.append(Deck())
+
+    drawdeck.create()  #creates a full deck in our draw deck
+    drawdeck.shuffle()  #shuffles draw deck
+
+    for i in range(7):
+        for b in range(7):  # populates the card
+            if b >= i:
+                board[b].add(drawdeck.getcard(0))
+
+drawdeck = Deck() #creates the draw, discard decks
 discardeck = Deck()
 board = []
-drawdeck.shuffle()
-for i in range(7):
-    board.append(Deck())
-for i in range(7):
-    for b in range(7): #creates 7 decks to start off with
-        if b >= i:
-            board[b].add(drawdeck.getcard(0))
-
-
-
+createboard(board,discardeck)
+fliptop()
+displayboard(board)
 
