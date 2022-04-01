@@ -11,8 +11,8 @@ class Card:
             self.colour = "red"
 
 
-    def val(self,number):
-        if number == True:
+    def val(self,truenumber):
+        if truenumber == True:
             return self.value
         else:
             if self.value > 10:
