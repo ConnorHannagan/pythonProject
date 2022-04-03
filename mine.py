@@ -5,9 +5,9 @@ class Card:
         self.known = False
         self.value = Value
         self.suit = Suit
-        if self.suit == "S" or self.suit == "C":
+        if self.suit == "♠" or self.suit == "♣":
             self.colour = "black"
-        elif self.suit == "H" or self.suit ==  "D":
+        elif self.suit == "♥" or self.suit ==  "♦":
             self.colour = "red"
 
 
@@ -41,7 +41,7 @@ class Deck:
 
 
     def create(self):
-        for a in ("D", "H", "C", "S"):
+        for a in ("♦", "♥", "♣", "♠"):
             for i in range(13):
                 self.cards.append(Card(i+1, a))
 
