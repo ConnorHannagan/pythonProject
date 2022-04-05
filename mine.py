@@ -7,9 +7,8 @@ class Card:
         self.suit = Suit
         if self.suit == "♠" or self.suit == "♣":
             self.colour = "black"
-        elif self.suit == "♥" or self.suit ==  "♦":
+        elif self.suit == "♥" or self.suit == "♦":
             self.colour = "red"
-
 
     def val(self,truenumber):
         if truenumber == True:
@@ -18,6 +17,8 @@ class Card:
             if self.value > 10:
                 special = ["J","Q","K"]
                 return special[self.value-11]
+            elif self.value == 1:
+                return "a"
             else:
                 return self.value
 
@@ -36,9 +37,9 @@ class Card:
 
 class Deck:
 
-    def __init__(self):
+    def __init__(self, base):
         self.cards = []
-
+        self.basestate = base
 
     def create(self):
         for a in ("♦", "♥", "♣", "♠"):
@@ -49,11 +50,16 @@ class Deck:
         random.shuffle(self.cards)
 
     def veiwcard(self,position):
+        if position == 0:
+            if len(self.cards) == 0:
+                temp = "[ " + self.basestate + " ] "
+                return temp
+
         if position > len(self.cards)-1:
             return "        "
+
         elif self.cards[position].known == True:
                 temp = self.cards[position]
-
                 if temp.val(True) != 10:
                     temp = " [ " + temp.suite() + str(temp.val(False)) + "  ]"
                 else:
@@ -92,32 +98,44 @@ class Deck:
         self.cards[len(self.cards)-1].flip()
 
 
-def displayboard(board):
+def displayboard():
+    print(drawdeck.veiwcard(0), discardeck.veiwcard(0), "       ", end= '')
+    for i in range(len(foundations)):
+        print(foundations[i].veiwcard(0), end='')
+    print("")
     for i  in range(7):
-        print(board[0].veiwcard(i),board[1].veiwcard(i),board[2].veiwcard(i),board[3].veiwcard(i),board[4].veiwcard(i),board[5].veiwcard(i), board[6].veiwcard(i))
+        print(i+1, end= '')
+        for a in range(7):
+            print(board[a].veiwcard(i), end='')
+        print(" ",i+1)
 
 def fliptop():
     for i in range(7):
         board[i].flip()
 
-def createboard(board, drawdeck):
+
+def createboard():
 
 
     for i in range(7): #populates the Board array with our decks
-        board.append(Deck())
+        board.append(Deck("   "))
 
     drawdeck.create()  #creates a full deck in our draw deck
     drawdeck.shuffle()  #shuffles draw deck
 
-    for i in range(7):
+    for i in range(7): # creates Tableau
         for b in range(7):  # populates the card
             if b >= i:
                 board[b].add(drawdeck.getcard(0))
+    for i in ("♦", "♥", "♣", "♠"):
+        foundations.append(Deck(" " + i + " "))
 
-drawdeck = Deck() #creates the draw, discard decks
-discardeck = Deck()
+
+drawdeck = Deck("   ") #creates the draw, discard decks
+discardeck = Deck("   ")
 board = []
-createboard(board,discardeck)
+foundations = []
+createboard()
 fliptop()
-displayboard(board)
+displayboard()
 
