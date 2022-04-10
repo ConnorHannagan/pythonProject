@@ -52,7 +52,7 @@ class Deck:
     def veiwcard(self,position):
         if position == 0:
             if len(self.cards) == 0:
-                temp = "[ " + self.basestate + " ] "
+                temp = "[" + self.basestate + "  ] "
                 return temp
 
         if position > len(self.cards)-1:
@@ -99,26 +99,30 @@ class Deck:
 
 
 def displayboard():
-    print(drawdeck.veiwcard(0), discardeck.veiwcard(0), "       ", end= '')
+    print("", drawdeck.veiwcard(0), discardeck.veiwcard(0), "       ", end= '')
     for i in range(len(foundations)):
         print(foundations[i].veiwcard(0), end='')
     print("")
-    for i  in range(7):
-        print(i+1, end= '')
+    print(" ", end ='')
+    for i in ("A","B","C","D","E","F","G"):
+        print ("   ", i, "  ", end = "")
+    print("")
+    for i in range(7):
+        print(i+1, end= '') #left side numbers
         for a in range(7):
             print(board[a].veiwcard(i), end='')
-        print(" ",i+1)
+        print(" ",i+1) #right side numbers
 
 def fliptop():
     for i in range(7):
-        board[i].flip()
-
+        if board[i].getl() > 0:
+            board[i].flip()
 
 def createboard():
 
 
     for i in range(7): #populates the Board array with our decks
-        board.append(Deck("   "))
+        board.append(Deck("      "))
 
     drawdeck.create()  #creates a full deck in our draw deck
     drawdeck.shuffle()  #shuffles draw deck
@@ -130,12 +134,49 @@ def createboard():
     for i in ("♦", "♥", "♣", "♠"):
         foundations.append(Deck(" " + i + " "))
 
+def getinput():
+    userinpt = input("please select the pile you want to pick up from (A,B,C,D,E,F,G)\n").upper()
+    a = 0
+    for i in ("A", "B", "C", "D", "E", "F", "G"):
+        a += 1
+        if userinpt == i:
+            x = a
+    userinpt = input("please select the card from 1 - 7 ")
+    for i in range(7):
+        if userinpt == str(i):
+            y = i
+    print(board[x - 1].veiwcard(y - 1))
+    userinpt = input("select the pile you want to place it on (A,B,C,D,E,F,G)").upper()
+    a = 0
+    for i in ("A", "B", "C", "D", "E", "F", "G"):
+        a += 1
+        if userinpt == i:
+            z = a
+    board[z - 1].add(board[x - 1].getcard(y - 1))
+
+def rungame():
+    createboard()
+    while True:
+        fliptop()
+        displayboard()
+        getinput()
+
+
+
+
+def findmax():
+    max = 0
+    for i in range(7):
+        if board[i].getl() > max:
+            max = board[i].getl()
+    return max
+
+
+
 
 drawdeck = Deck("   ") #creates the draw, discard decks
 discardeck = Deck("   ")
 board = []
 foundations = []
-createboard()
-fliptop()
-displayboard()
+rungame()
 
