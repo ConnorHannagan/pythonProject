@@ -174,6 +174,7 @@ def findmax():
 
 
 
+
 drawdeck = Deck("   ") #creates the draw, discard decks
 discardeck = Deck("   ")
 board = []
