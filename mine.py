@@ -29,7 +29,10 @@ class Card:
         return self.colour
 
     def known(self):
-        return self.known
+        if self.know == True:
+            return True
+        else:
+            return False
 
     def flip(self):
         self.known = True
@@ -52,21 +55,21 @@ class Deck:
     def veiwcard(self,position):
         if position == 0:
             if len(self.cards) == 0:
-                temp = "[" + self.basestate + "  ] "
+                temp = "[" + self.basestate + "] "
                 return temp
 
         if position > len(self.cards)-1:
-            return "        "
+            return "         "
 
         elif self.cards[position].known == True:
                 temp = self.cards[position]
                 if temp.val(True) != 10:
-                    temp = " [ " + temp.suite() + str(temp.val(False)) + "  ]"
+                    temp = " [ " + temp.suite() + str(temp.val(False)) + "  ] "
                 else:
-                    temp = " [ " + temp.suite() + str(temp.val(False)) + " ]"
+                    temp = " [ " + temp.suite() + str(temp.val(False)) + " ] "
                 return temp
         else:
-            return " [ xxx ]"
+            return " [ xxx ] "
 
     def getcard(self, position):
         if position > len(self.cards):
@@ -82,6 +85,9 @@ class Deck:
         #         return False
         #     else:
         #         return position.self.cards
+
+    def get(self, position):
+        return self.cards[position]
 
     def add(self, card):
         self.cards.append(card)
@@ -99,13 +105,13 @@ class Deck:
 
 
 def displayboard():
-    print("", drawdeck.veiwcard(0), discardeck.veiwcard(0), "       ", end= '')
+    print("", drawdeck.veiwcard(0), discardeck.veiwcard(0), "         ", end= '')
     for i in range(len(foundations)):
-        print(foundations[i].veiwcard(0), end='')
+        print(foundations[i].veiwcard(0),"", end='')
     print("")
     print(" ", end ='')
     for i in ("A","B","C","D","E","F","G"):
-        print ("   ", i, "  ", end = "")
+        print ("   ", i, "   ", end = "")
     print("")
     for i in range(7):
         print(i+1, end= '') #left side numbers
@@ -132,26 +138,51 @@ def createboard():
             if b >= i:
                 board[b].add(drawdeck.getcard(0))
     for i in ("♦", "♥", "♣", "♠"):
-        foundations.append(Deck(" " + i + " "))
+        foundations.append(Deck("  " + i + "  "))
 
 def getinput():
-    userinpt = input("please select the pile you want to pick up from (A,B,C,D,E,F,G)\n").upper()
+    global z
+    userinpt = input("please select the pile you want to pick up from (A,B,C,D,E,F,G)\n\nor\n2) Draw\n1) Pickup from draw pile\n3) Pick up from foundations\n").upper()
     a = 0
     for i in ("A", "B", "C", "D", "E", "F", "G"):
         a += 1
         if userinpt == i:
             x = a
+            a = True
+            break
+    if a != True:
+        clear()
+        input("please input a A,B,C,D,E,F,G \n\n\nenter to continue")
+        return
+
     userinpt = input("please select the card from 1 - 7 ")
     for i in range(7):
         if userinpt == str(i):
-            y = i
+            if board[x-1].getl() < i:
+                clear()
+                input("please input a card that exists \n\n\nenter to continue")
+                return
+            else:
+                if board[x - 1].get(i - 1).known == True:
+                    y = i
+                else:
+                    clear()
+                    input("please input a known card\n\n\nenter to continue")
+                    return
+
     print(board[x - 1].veiwcard(y - 1))
     userinpt = input("select the pile you want to place it on (A,B,C,D,E,F,G)").upper()
     a = 0
+
     for i in ("A", "B", "C", "D", "E", "F", "G"):
         a += 1
         if userinpt == i:
             z = a
+            a = True
+    if a != True:
+        clear()
+        input("please input a A,B,C,D,E,F,G \n\n\nenter to continue")
+        return
     board[z - 1].add(board[x - 1].getcard(y - 1))
 
 def rungame():
@@ -162,7 +193,9 @@ def rungame():
         getinput()
 
 
-
+def clear():
+    for i in range(20):
+        print("")
 
 def findmax():
     max = 0
@@ -175,8 +208,9 @@ def findmax():
 
 
 
-drawdeck = Deck("   ") #creates the draw, discard decks
-discardeck = Deck("   ")
+drawdeck = Deck("    ") #creates the draw, discard decks
+discardeck = Deck("     ")
+hand = Deck("")
 board = []
 foundations = []
 rungame()
