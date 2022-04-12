@@ -1,4 +1,5 @@
 import random
+
 class Card:
 
     def __init__(self, Value, Suit):
@@ -33,6 +34,9 @@ class Card:
             return True
         else:
             return False
+
+    def hide(self):
+        self.known = False
 
     def flip(self):
         self.known = True
@@ -95,7 +99,8 @@ class Deck:
 
     def flip(self):
         self.cards[len(self.cards)-1].flip()
-
+drawdeck = Deck("    ") #creates the draw, discard decks
+discardeck = Deck("     ")
 
 def displayboard():
     print("", drawdeck.veiwcard(0), discardeck.veiwcard(discardeck.getl()-1), "         ", end= '')
@@ -137,6 +142,13 @@ def getinput():
     userinpt = input("please select the pile you want to pick up from (A,B,C,D,E,F,G)\n\nor\n1) Draw\n2) Pickup from draw pile\n3) Pick up from foundations\n").upper()
     a = 0
     if userinpt == "1":
+
+        if drawdeck.getl() == 0:
+            for i in range(discardeck.getl()):
+                discardeck.get(0).hide()
+                drawdeck.add(discardeck.getcard(0))
+            return
+
         discardeck.add(drawdeck.getcard(0))
         discardeck.flip()
         return
@@ -188,7 +200,6 @@ def rungame():
         displayboard()
         getinput()
 
-
 def clear():
     for i in range(20):
         print("")
@@ -204,8 +215,7 @@ def findmax():
 
 
 
-drawdeck = Deck("    ") #creates the draw, discard decks
-discardeck = Deck("     ")
+
 hand = Deck("")
 board = []
 foundations = []
