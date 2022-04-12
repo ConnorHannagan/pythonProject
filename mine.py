@@ -53,7 +53,7 @@ class Deck:
         random.shuffle(self.cards)
 
     def veiwcard(self,position):
-        if position == 0:
+        if position <= 0:
             if len(self.cards) == 0:
                 temp = "[" + self.basestate + "] "
                 return temp
@@ -78,13 +78,6 @@ class Deck:
             temp = self.cards[position]
             self.cards.pop(position)
             return temp
-        # if position == 0:
-        #     return position.self.cards
-        # if position > 0:
-        #     if position.self.cards.known == False:
-        #         return False
-        #     else:
-        #         return position.self.cards
 
     def get(self, position):
         return self.cards[position]
@@ -105,7 +98,7 @@ class Deck:
 
 
 def displayboard():
-    print("", drawdeck.veiwcard(0), discardeck.veiwcard(0), "         ", end= '')
+    print("", drawdeck.veiwcard(0), discardeck.veiwcard(discardeck.getl()-1), "         ", end= '')
     for i in range(len(foundations)):
         print(foundations[i].veiwcard(0),"", end='')
     print("")
@@ -141,9 +134,12 @@ def createboard():
         foundations.append(Deck("  " + i + "  "))
 
 def getinput():
-    global z
-    userinpt = input("please select the pile you want to pick up from (A,B,C,D,E,F,G)\n\nor\n2) Draw\n1) Pickup from draw pile\n3) Pick up from foundations\n").upper()
+    userinpt = input("please select the pile you want to pick up from (A,B,C,D,E,F,G)\n\nor\n1) Draw\n2) Pickup from draw pile\n3) Pick up from foundations\n").upper()
     a = 0
+    if userinpt == "1":
+        discardeck.add(drawdeck.getcard(0))
+        discardeck.flip()
+        return
     for i in ("A", "B", "C", "D", "E", "F", "G"):
         a += 1
         if userinpt == i:
@@ -152,7 +148,7 @@ def getinput():
             break
     if a != True:
         clear()
-        input("please input a A,B,C,D,E,F,G \n\n\nenter to continue")
+        input("please input a valid input \n\n\nenter to continue")
         return
 
     userinpt = input("please select the card from 1 - 7 ")
