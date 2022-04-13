@@ -142,16 +142,39 @@ def getinput():
     userinpt = input("please select the pile you want to pick up from (A,B,C,D,E,F,G)\n\nor\n1) Draw\n2) Pickup from draw pile\n3) Pick up from foundations\n").upper()
     a = 0
     if userinpt == "1":
-
         if drawdeck.getl() == 0:
             for i in range(discardeck.getl()):
                 discardeck.get(0).hide()
                 drawdeck.add(discardeck.getcard(0))
             return
-
         discardeck.add(drawdeck.getcard(0))
         discardeck.flip()
         return
+
+    if userinpt == "2":
+
+        if discardeck.getl() == 0:
+            clear()
+            input("draw deck is empty \n\n\nenter to continue")
+            return
+        print(discardeck.veiwcard(0))
+        userinpt = input("select the pile you want to place it on (A,B,C,D,E,F,G)").upper()
+        a = 0
+
+        for i in ("A", "B", "C", "D", "E", "F", "G"):
+            a += 1
+            if userinpt == i:
+                z = a
+                a = True
+                break
+        if a != True:
+            clear()
+            input("please input a A,B,C,D,E,F,G \n\n\nenter to continue")
+            return
+        board[z-1].add(discardeck.getcard(0))
+        return
+
+
     for i in ("A", "B", "C", "D", "E", "F", "G"):
         a += 1
         if userinpt == i:
@@ -177,7 +200,6 @@ def getinput():
                     clear()
                     input("please input a known card\n\n\nenter to continue")
                     return
-
     print(board[x - 1].veiwcard(y - 1))
     userinpt = input("select the pile you want to place it on (A,B,C,D,E,F,G)").upper()
     a = 0
@@ -187,11 +209,17 @@ def getinput():
         if userinpt == i:
             z = a
             a = True
+            break
     if a != True:
         clear()
         input("please input a A,B,C,D,E,F,G \n\n\nenter to continue")
         return
-    board[z - 1].add(board[x - 1].getcard(y - 1))
+    else:
+        if board[z-1].getl() > x-1:
+            for i in range(board[z-1].getl()-x):
+                hand.add(board[z-1].getcard([i + x]))
+        else:
+            board[z - 1].add(board[x - 1].getcard(y - 1))
 
 def rungame():
     createboard()
