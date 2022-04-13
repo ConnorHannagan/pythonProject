@@ -166,8 +166,7 @@ def getinput():
                 a = True
                 break
         if a != True:
-            clear()
-            input("please input a A,B,C,D,E,F,G \n\n\nenter to continue")
+            error("please input a A,B,C,D,E,F,G")
             return
         board[z-1].add(discardeck.getcard(discardeck.getl()-1))
         return
@@ -180,32 +179,30 @@ def getinput():
             a = True
             break
     if a != True:
-        clear()
-        input("please input a valid input \n\n\nenter to continue")
+        error("please input a valid input")
         return
     try:
         userinpt = input("please select the card from 1 - 7 ")
         for i in range(8):
             if userinpt == str(i):
                 if board[x-1].getl() < i:
-                    clear()
-                    input("please input a card that exists \n\n\nenter to continue")
+                    error("please input a card that exists")
                     return
                 else:
                     if board[x - 1].get(i - 1).known == True:
                         y = i
                     else:
-                        clear()
-                        input("please input a known card\n\n\nenter to continue")
+                        error("please input a known card")
                         return
         print(board[x - 1].veiwcard(y - 1))
     except:
-        clear()
-        input("please input a card that exists \n\n\nenter to continue")
+        error("please input a card that exists")
         return
 
-    userinpt = input("select the pile you want to place it on (A,B,C,D,E,F,G)").upper()
+    userinpt = input("select the pile you want to place it on (A,B,C,D,E,F,G) \nor\n1) Place into foundations").upper()
     a = 0
+
+
 
     for i in ("A", "B", "C", "D", "E", "F", "G"):
         a += 1
@@ -214,8 +211,7 @@ def getinput():
             a = True
             break
     if a != True:
-        clear()
-        input("please input a A,B,C,D,E,F,G \n\n\nenter to continue")
+        error("please input a A,B,C,D,E,F,G")
         return
     else:
         print(board[x - 1].get(y-1).colour)
@@ -223,8 +219,11 @@ def getinput():
         print(board[z-1].get(board[z-1].getl()-1).colour)
         print(board[z-1].get(board[z-1].getl()-1).val(True))
 
-        if board[x - 1].get(y - 1).colour != board[z].get(board[z].getl()-1).colour:
-            board[z - 1].add(board[x - 1].getcard(y - 1))
+        if board[x - 1].get(y - 1).colour != board[z-1].get(board[z-1].getl()-1).colour:
+            if board[z-1].get(board[z-1].getl()-1).val(True) - 1 == board[x - 1].get(y - 1).val(True):
+                board[z - 1].add(board[x - 1].getcard(y - 1))
+
+                print("MOVED")
         else:
             print("shame")
 
@@ -234,6 +233,12 @@ def rungame():
         fliptop()
         displayboard()
         getinput()
+
+def error(error):
+    clear()
+    temp = error + "\n\n\nenter to continue"
+    input(temp)
+
 
 def clear():
     for i in range(20):
