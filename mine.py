@@ -203,12 +203,30 @@ def getinput():
     userinpt = input("select the pile you want to place it on (A,B,C,D,E,F,G) \nor\n1) Place into foundations\n").upper()
     a = 0
 
+
+    full = True
     if userinpt == "1":
-        userinpt == input("please select what foundation you want to the card in\n\n1)Diamonds\n2)Hearts\n3)Clubs\n4)Spades")
-        temp = 0
-        for i in ("1","2","3","4"):
-            if userinpt == i:
-                temp = i
+        for i in range(len(foundations)): #checks all the foundations
+            if foundations[i-1].getl() > 0: #sees if they are populated
+                if foundations[i-1].get(foundations[i-1].getl()).suite == board[x-1].get(y-1): # if populated checks to see if its the same suite
+                    foundations[i-1].add(board[x-1].getcard(y-1))
+            else: #if a foundation is empty, it lets us know for the secound pass
+                full = False
+        if board[x-1].get(y-1).val(True) == 1:
+            for i in range(len(foundations)):
+                if foundations[i - 1].getl() > 0:
+                    foundations[i-1].add(board[x-1].getcard(y-1))
+        else:
+            error("")
+            return
+
+
+
+        # userinpt == input("please select what foundation you want to the card in\n\n1)Diamonds\n2)Hearts\n3)Clubs\n4)Spades")
+        # temp = 0
+        # for i in ("1","2","3","4"):
+        #     if userinpt == i:
+        #         temp = i
         if temp != 0:
             for i in range (4):
                 if foundations[i-1].getl() == 0:
