@@ -99,8 +99,6 @@ class Deck:
 
     def flip(self):
         self.cards[len(self.cards)-1].flip()
-drawdeck = Deck("    ") #creates the draw, discard decks
-discardeck = Deck("     ")
 
 def displayboard():
     print("", drawdeck.veiwcard(0), discardeck.veiwcard(discardeck.getl()-1), "         ", end= '')
@@ -157,7 +155,7 @@ def getinput():
             clear()
             input("draw deck is empty \n\n\nenter to continue")
             return
-        print(discardeck.veiwcard(0))
+        print(discardeck.veiwcard(discardeck.getl()-1))
         userinpt = input("select the pile you want to place it on (A,B,C,D,E,F,G)").upper()
         a = 0
 
@@ -171,7 +169,7 @@ def getinput():
             clear()
             input("please input a A,B,C,D,E,F,G \n\n\nenter to continue")
             return
-        board[z-1].add(discardeck.getcard(0))
+        board[z-1].add(discardeck.getcard(discardeck.getl()-1))
         return
 
 
@@ -215,11 +213,7 @@ def getinput():
         input("please input a A,B,C,D,E,F,G \n\n\nenter to continue")
         return
     else:
-        if board[z-1].getl() > x-1:
-            for i in range(board[z-1].getl()-x):
-                hand.add(board[z-1].getcard([i + x]))
-        else:
-            board[z - 1].add(board[x - 1].getcard(y - 1))
+        board[z - 1].add(board[x - 1].getcard(y - 1))
 
 def rungame():
     createboard()
@@ -243,6 +237,8 @@ def findmax():
 
 
 
+drawdeck = Deck("    ") #creates the draw, discard decks
+discardeck = Deck("     ")
 
 hand = Deck("")
 board = []
