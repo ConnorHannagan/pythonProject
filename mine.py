@@ -182,7 +182,8 @@ def getinput():
         error("please input a valid input")
         return
     try:
-        userinpt = input("please select the card from 1 - 7 ")
+        print("please select the card from 1 -", board[x-1].getl())
+        userinpt = input()
         for i in range(8):
             if userinpt == str(i):
                 if board[x-1].getl() < i:
