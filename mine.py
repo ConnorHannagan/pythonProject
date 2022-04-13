@@ -127,7 +127,7 @@ def createboard():
         board.append(Deck("      "))
 
     drawdeck.create()  #creates a full deck in our draw deck
-    drawdeck.shuffle()  #shuffles draw deck
+    # drawdeck.shuffle()  #shuffles draw deck
 
     for i in range(7): # creates Tableau
         for b in range(7):  # populates the card
@@ -183,22 +183,27 @@ def getinput():
         clear()
         input("please input a valid input \n\n\nenter to continue")
         return
-
-    userinpt = input("please select the card from 1 - 7 ")
-    for i in range(7):
-        if userinpt == str(i):
-            if board[x-1].getl() < i:
-                clear()
-                input("please input a card that exists \n\n\nenter to continue")
-                return
-            else:
-                if board[x - 1].get(i - 1).known == True:
-                    y = i
-                else:
+    try:
+        userinpt = input("please select the card from 1 - 7 ")
+        for i in range(8):
+            if userinpt == str(i):
+                if board[x-1].getl() < i:
                     clear()
-                    input("please input a known card\n\n\nenter to continue")
+                    input("please input a card that exists \n\n\nenter to continue")
                     return
-    print(board[x - 1].veiwcard(y - 1))
+                else:
+                    if board[x - 1].get(i - 1).known == True:
+                        y = i
+                    else:
+                        clear()
+                        input("please input a known card\n\n\nenter to continue")
+                        return
+        print(board[x - 1].veiwcard(y - 1))
+    except:
+        clear()
+        input("please input a card that exists \n\n\nenter to continue")
+        return
+
     userinpt = input("select the pile you want to place it on (A,B,C,D,E,F,G)").upper()
     a = 0
 
@@ -213,7 +218,15 @@ def getinput():
         input("please input a A,B,C,D,E,F,G \n\n\nenter to continue")
         return
     else:
-        board[z - 1].add(board[x - 1].getcard(y - 1))
+        print(board[x - 1].get(y-1).colour)
+        print(board[x - 1].get(y - 1).val(True))
+        print(board[z-1].get(board[z-1].getl()-1).colour)
+        print(board[z-1].get(board[z-1].getl()-1).val(True))
+
+        if board[x - 1].get(y - 1).colour != board[z].get(board[z].getl()-1).colour:
+            board[z - 1].add(board[x - 1].getcard(y - 1))
+        else:
+            print("shame")
 
 def rungame():
     createboard()
