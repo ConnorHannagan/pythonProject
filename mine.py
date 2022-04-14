@@ -149,8 +149,10 @@ def createboard():
 
 def legal(first, placing):
     if first.colour != placing.colour:
-        if first.val(True) != placing.val(True) +1:
+        if first.val(True) == placing.val(True) + 1:
             return True
+        else:
+            return False
 
 
 def getinput():
@@ -197,7 +199,7 @@ def getinput():
 
                 if foundations[x-1].getl() > 0:
                     print(foundations[x-1].veiwcard(foundations[x-1].getl()-1))
-                    userinpt = input("select the pile you want to place it on (A,B,C,D,E,F,G\n")
+                    userinpt = input("select the pile you want to place it on (A,B,C,D,E,F,G\n").upper()
                     for i in ("A", "B", "C", "D", "E", "F", "G"):
                         a += 1
                         if userinpt == i:
@@ -206,12 +208,11 @@ def getinput():
                             break
                     if a != True:
                         error("please input a A,B,C,D,E,F,G")
+                        return
                     else:
-                        if legal(board[z-1].get(board[z-1].getl()-1), foundations[x-1].get(foundations[x-1].getl()-1)):
-                            board[z - 1].add(foundations[x - 1].getcard())
-                        # if foundations[x - 1].get(foundations[x-1].colour != board[z-1].get(board[z-1].getl()-1).colour):
-                        #     if foundations[x - 1].get(foundations[x-1].getl()).val(True) != board[z-1].get(board[z-1].getl()-1).val(True):
-                        #         board[z-1].add(foundations[x-1].getcard())
+                        if legal(board[z-1].get(board[z-1].getl()-1), foundations[x-1].get(foundations[x-1].getl()-1)) == True:
+                            board[z - 1].add(foundations[x - 1].getcard(foundations[x-1].getl()-1))
+                            return
                         else:
                             error("this is not a legal move")
                             return
@@ -254,7 +255,7 @@ def getinput():
     a = 0
 
 
-    if userinpt == "1":
+    if userinpt == "1": #places into foundation
 
         if board[x-1].get(y-1).val(True) == 1: #checks to see if it is an ace
             for i in range(len(foundations)): #goes through all foundations
@@ -269,7 +270,7 @@ def getinput():
             if foundations[i-1].getl() > 0: #sees if they are populated
                 if foundations[i-1].get(foundations[i-1].getl()).suite == board[x-1].get(y-1): # if populated checks to see if its the same suite
                     foundations[i-1].add(board[x-1].getcard(y-1))
-                    return
+                    return  #moving cards into the
 
     for i in ("A", "B", "C", "D", "E", "F", "G"):
         a += 1
@@ -281,6 +282,15 @@ def getinput():
         error("please input a A,B,C,D,E,F,G")
         return
     else:
+        if board[z-1].getl() == 0:#checks to see if pile card is going is empty
+            if board[x-1].get(y-1).val(True) == 13:#checks to see if card moving is a king
+                board[z - 1].add(board[x - 1].getcard(y - 1))#if all above is true, places
+                return
+            else: # if you are trying to something that is not a king, it tell the user they cant
+                error("You can only move a king here")
+                return
+
+# if you are moving a card ontop of another card, it will check if its legal then moves the card. if the move is not legal it will inform the user
         if legal(board[x-1].get(y-1), board[z-1].get(board[z-1].getl()-1)) == True:
             board[z - 1].add(board[x - 1].getcard(y - 1))
         else:
