@@ -41,12 +41,11 @@ class Card:
     def flip(self):
         self.known = True
 
-
 class Deck:
 
-    def __init__(self, base):
+    def __init__(self):
         self.cards = []
-        self.basestate = base
+        self.basestate = "     "
 
     def create(self):
         for a in ("♦", "♥", "♣", "♠"):
@@ -124,7 +123,7 @@ def createboard():
 
 
     for i in range(7): #populates the Board array with our decks
-        board.append(Deck("      "))
+        board.append(Deck())
 
     drawdeck.create()  #creates a full deck in our draw deck
     # drawdeck.shuffle()  #shuffles draw deck
@@ -134,7 +133,7 @@ def createboard():
             if b >= i:
                 board[b].add(drawdeck.getcard(0))
     for i in ("♦", "♥", "♣", "♠"):
-        foundations.append(Deck("  " + i + "  "))
+        foundations.append(Deck())
 
 def getinput():
     userinpt = input("please select the pile you want to pick up from (A,B,C,D,E,F,G)\n\nor\n1) Draw\n2) Pickup from draw pile\n3) Pick up from foundations\n").upper()
@@ -209,24 +208,18 @@ def getinput():
     if userinpt == "1":
 
         if board[x-1].get(y-1).val(True) == 1: #checks to see if it is an ace
-            print("1")
             for i in range(len(foundations)): #goes through all foundations
                 if foundations[i - 1].getl() == 0: #checks to see if foundations are empty
-                    print("2")
                     foundations[i-1].add(board[x-1].getcard(y-1)) #if foundation is empty, it populates it with the card
                     return
         else: # if the card is not an ace it will return an error for the user to do another move
-            print("3")
             error("")
             return
 
         for i in range(len(foundations)): #checks all the foundations
-            print("4")
             if foundations[i-1].getl() > 0: #sees if they are populated
-                print("5")
                 if foundations[i-1].get(foundations[i-1].getl()).suite == board[x-1].get(y-1): # if populated checks to see if its the same suite
                     foundations[i-1].add(board[x-1].getcard(y-1))
-                    print("6")
                     return
 
     for i in ("A", "B", "C", "D", "E", "F", "G"):
@@ -239,18 +232,12 @@ def getinput():
         error("please input a A,B,C,D,E,F,G")
         return
     else:
-        print(board[x - 1].get(y-1).colour)
-        print(board[x - 1].get(y - 1).val(True))
-        print(board[z-1].get(board[z-1].getl()-1).colour)
-        print(board[z-1].get(board[z-1].getl()-1).val(True))
-
         if board[x - 1].get(y - 1).colour != board[z-1].get(board[z-1].getl()-1).colour:
             if board[z-1].get(board[z-1].getl()-1).val(True) - 1 == board[x - 1].get(y - 1).val(True):
                 board[z - 1].add(board[x - 1].getcard(y - 1))
-
-                print("MOVED")
         else:
-            print("shame")
+            error("this is not a legal move")
+            return
 
 def rungame():
     createboard()
@@ -264,7 +251,6 @@ def error(error):
     temp = error + "\n\n\nenter to continue"
     input(temp)
 
-
 def clear():
     for i in range(20):
         print("")
@@ -277,13 +263,9 @@ def findmax():
     return max
 
 
-
-
-
-drawdeck = Deck("    ") #creates the draw, discard decks
-discardeck = Deck("     ")
-
-hand = Deck("")
+drawdeck = Deck() #creates the draw, discard decks
+discardeck = Deck()
+hand = Deck()
 board = []
 foundations = []
 rungame()
