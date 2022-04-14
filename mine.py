@@ -147,7 +147,6 @@ def fliptop():
 def createboard():
     for i in range(7):  # populates the Board array with our decks
         board.append(Deck())
-
     drawdeck.create()  # creates a full deck in our draw deck
     drawdeck.shuffle()  #shuffles draw deck
 
@@ -161,11 +160,9 @@ def createboard():
 
 def legal(first, placing):
     if first.colour != placing.colour:
-        print("twooo")
         print(first.val(True))
         print(placing.val(True) + 1)
         if first.val(True) == placing.val(True) + 1:
-            print("huh?")
             return True
         else:
             return False
