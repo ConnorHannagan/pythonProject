@@ -207,10 +207,11 @@ def getinput():
                     if a != True:
                         error("please input a A,B,C,D,E,F,G")
                     else:
-
-                        if foundations[x - 1].get(foundations[x-1].colour != board[z-1].get(board[z-1].getl()-1).colour):
-                            if foundations[x - 1].get(foundations[x-1].getl()).val(True) != board[z-1].get(board[z-1].getl()-1).val(True):
-                                board[z-1].add(foundations[x-1].getcard())
+                        if legal(board[z-1].get(board[z-1].getl()-1), foundations[x-1].get(foundations[x-1].getl()-1)):
+                            board[z - 1].add(foundations[x - 1].getcard())
+                        # if foundations[x - 1].get(foundations[x-1].colour != board[z-1].get(board[z-1].getl()-1).colour):
+                        #     if foundations[x - 1].get(foundations[x-1].getl()).val(True) != board[z-1].get(board[z-1].getl()-1).val(True):
+                        #         board[z-1].add(foundations[x-1].getcard())
                         else:
                             error("this is not a legal move")
                             return
@@ -282,9 +283,6 @@ def getinput():
     else:
         if legal(board[x-1].get(y-1), board[z-1].get(board[z-1].getl()-1)) == True:
             board[z - 1].add(board[x - 1].getcard(y - 1))
-        # if board[x - 1].get(y - 1).colour != board[z-1].get(board[z-1].getl()-1).colour:
-        #     if board[z-1].get(board[z-1].getl()-1).val(True) - 1 == board[x - 1].get(y - 1).val(True):
-        #         board[z - 1].add(board[x - 1].getcard(y - 1))
         else:
             error("this is not a legal move")
             return
