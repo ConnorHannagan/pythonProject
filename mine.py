@@ -45,7 +45,7 @@ class Deck:
 
     def __init__(self):
         self.cards = []
-        self.basestate = "     "
+        self.basestate = "  "
 
     def create(self):
         for a in ("♦", "♥", "♣", "♠"):
@@ -58,7 +58,7 @@ class Deck:
     def veiwcard(self,position):
         if position <= 0:
             if len(self.cards) == 0:
-                temp = "[" + self.basestate + "] "
+                temp = " [ " + self.basestate + "  ] "
                 return temp
 
         if position > len(self.cards)-1:
@@ -100,11 +100,23 @@ class Deck:
         self.cards[len(self.cards)-1].flip()
 
 def displayboard():
-    print("", drawdeck.veiwcard(0), discardeck.veiwcard(discardeck.getl()-1), "         ", end= '')
+
+#printing off foundation numbering
+    for i in range(28):
+        print(" ",end = '')
+    for i in range(4):
+        print("   ", i+1, "   ", end = '')
+    print("")
+
+#prints off top row
+    print("", drawdeck.veiwcard(0),end='')
+    print(discardeck.veiwcard(discardeck.getl()-1), "        ", end= '')
     for i in range(len(foundations)):
-        print(foundations[i].veiwcard(0),"", end='')
+        print(foundations[i].veiwcard(0), end='')
     print("")
     print(" ", end ='')
+
+#printing off lettering of the 7 piles
     for i in ("A","B","C","D","E","F","G"):
         print ("   ", i, "   ", end = "")
     print("")
