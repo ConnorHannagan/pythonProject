@@ -127,7 +127,7 @@ def displayboard():
     normal = "\033[0;37;40m" #sets normal print colour
 
     # printing off foundation numbering
-    for i in range(28):
+    for i in range(29):
         print(" ", end='')
     for i in range(4):
         print("   ", i + 1, "   ", end='')
@@ -265,8 +265,8 @@ def getinput():
             x += 1
             if userinpt == i:
 
-                if foundations[x - 1].getl() > 0:
-                    print(foundations[x - 1].veiwcard(foundations[x - 1].getl() - 1))
+                if foundations[x - 1].getl() > 0: #checks if there are cards in the foundations
+                    print(foundations[x - 1].veiwcard(foundations[x - 1].getl() - 1)) #prints the card so the user can remeber the card they selected
                     userinpt = input("select the pile you want to place it on (A,B,C,D,E,F,G\n").upper()
                     for i in ("A", "B", "C", "D", "E", "F", "G"):
                         a += 1
@@ -274,18 +274,18 @@ def getinput():
                             z = a
                             a = True
                             break
-                    if a != True:
+                    if a != True:#if the user didnt input correctly it returns an error
                         error("please input a A,B,C,D,E,F,G")
                         return
                     else:
-                        if board[z-1].getl() == 0:
+                        if board[z-1].getl() == 0: #if the deck in the board refreneced is not populated it makes sure a king is the first card to do so
                             if foundations[x-1].get(foundations[x-1].getl()-1).val(True) == 13:
                                 board[z - 1].add(foundations[x - 1].getcard(foundations[x - 1].getl() - 1))
                             else:
                                 error("can only place king there")
                                 return
                         else:
-                            if legal(board[z - 1].get(board[z - 1].getl() - 1),foundations[x - 1].get(foundations[x - 1].getl() - 1)) == True:
+                            if legal(board[z - 1].get(board[z - 1].getl() - 1),foundations[x - 1].get(foundations[x - 1].getl() - 1)) == True: #checks if the move is legal, and if so it facilitates the move
                                 board[z - 1].add(foundations[x - 1].getcard(foundations[x - 1].getl() - 1))
                                 return
                             else:
