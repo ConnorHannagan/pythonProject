@@ -178,8 +178,7 @@ def addfoundation(card):
                 return True
 
 def getinput():
-    userinpt = input(
-        "please select the pile you want to pick up from (A,B,C,D,E,F,G)\n\nor\n1) Draw\n2) Pickup from draw pile\n3) Pick up from foundations\n").upper()
+    userinpt = input("please select the pile you want to pick up from (A,B,C,D,E,F,G)\n\nor\n1) Draw\n2) Pickup from draw pile\n3) Pick up from foundations\n").upper()
     a = 0
     if userinpt == "1":
         if drawdeck.getl() == 0:
@@ -197,10 +196,14 @@ def getinput():
             clear()
             input("draw deck is empty \n\n\nenter to continue")
             return
-        print(discardeck.veiwcard(discardeck.getl() - 1))
+        print(discardeck.veiwcard(discardeck.getl() - 1)) #displays the card so the player is sure of what they are moving
         userinpt = input("select the pile you want to place it on (A,B,C,D,E,F,G)\nor\n1) Place into foundations\n").upper()
         a = 0
-
+        if userinpt == "1":
+            if addfoundation(discardeck.get(discardeck.getl() - 1)) == True:
+                return
+        else:
+            error("you cannot place card there")
         for i in ("A", "B", "C", "D", "E", "F", "G"):
             a += 1
             if userinpt == i:
@@ -284,6 +287,7 @@ def getinput():
 
     if userinpt == "1":  # places into foundation
         if addfoundation(board[x - 1].get(y - 1)) == True:
+            board[x-1].getcard(y-1)
             return
         else:
             error("cannot move into foundations") #if you canot place into foundations it will
