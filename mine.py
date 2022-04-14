@@ -204,35 +204,28 @@ def getinput():
     a = 0
 
 
-    full = True
     if userinpt == "1":
-        for i in range(len(foundations)): #checks all the foundations
-            if foundations[i-1].getl() > 0: #sees if they are populated
-                if foundations[i-1].get(foundations[i-1].getl()).suite == board[x-1].get(y-1): # if populated checks to see if its the same suite
-                    foundations[i-1].add(board[x-1].getcard(y-1))
-            else: #if a foundation is empty, it lets us know for the secound pass
-                full = False
-        if board[x-1].get(y-1).val(True) == 1:
-            for i in range(len(foundations)):
-                if foundations[i - 1].getl() > 0:
-                    foundations[i-1].add(board[x-1].getcard(y-1))
-        else:
+
+        if board[x-1].get(y-1).val(True) == 1: #checks to see if it is an ace
+            print("1")
+            for i in range(len(foundations)): #goes through all foundations
+                if foundations[i - 1].getl() == 0: #checks to see if foundations are empty
+                    print("2")
+                    foundations[i-1].add(board[x-1].getcard(y-1)) #if foundation is empty, it populates it with the card
+                    return
+        else: # if the card is not an ace it will return an error for the user to do another move
+            print("3")
             error("")
             return
 
-
-
-        # userinpt == input("please select what foundation you want to the card in\n\n1)Diamonds\n2)Hearts\n3)Clubs\n4)Spades")
-        # temp = 0
-        # for i in ("1","2","3","4"):
-        #     if userinpt == i:
-        #         temp = i
-        if temp != 0:
-            for i in range (4):
-                if foundations[i-1].getl() == 0:
-                    foundations[i-1].add(board[x - 1].getcard(y - 1))
-
-        return
+        for i in range(len(foundations)): #checks all the foundations
+            print("4")
+            if foundations[i-1].getl() > 0: #sees if they are populated
+                print("5")
+                if foundations[i-1].get(foundations[i-1].getl()).suite == board[x-1].get(y-1): # if populated checks to see if its the same suite
+                    foundations[i-1].add(board[x-1].getcard(y-1))
+                    print("6")
+                    return
 
     for i in ("A", "B", "C", "D", "E", "F", "G"):
         a += 1
