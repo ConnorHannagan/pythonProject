@@ -366,6 +366,7 @@ def getinput():
             return
 
 
+#runs the game
 def rungame():
     createboard()
     while True:
@@ -373,18 +374,18 @@ def rungame():
         displayboard()
         getinput()
 
-
+#informs user of an error
 def error(error):
     clear()
     temp = error + "\n\n\nenter to continue"
     input(temp)
 
-
+#clears the screen
 def clear():
     for i in range(20):
         print("")
 
-
+#finds the lenght of the biggest deck on the board
 def findmax():
     max = 0
     for i in range(7):
