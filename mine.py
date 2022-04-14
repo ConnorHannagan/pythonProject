@@ -147,6 +147,12 @@ def createboard():
     for i in ("♦", "♥", "♣", "♠"):
         foundations.append(Deck())
 
+def legal(first, placing):
+    if first.colour != placing.colour:
+        if first.val(True) != placing.val(True) +1:
+            return True
+
+
 def getinput():
     userinpt = input("please select the pile you want to pick up from (A,B,C,D,E,F,G)\n\nor\n1) Draw\n2) Pickup from draw pile\n3) Pick up from foundations\n").upper()
     a = 0
@@ -201,6 +207,7 @@ def getinput():
                     if a != True:
                         error("please input a A,B,C,D,E,F,G")
                     else:
+
                         if foundations[x - 1].get(foundations[x-1].colour != board[z-1].get(board[z-1].getl()-1).colour):
                             if foundations[x - 1].get(foundations[x-1].getl()).val(True) != board[z-1].get(board[z-1].getl()-1).val(True):
                                 board[z-1].add(foundations[x-1].getcard())
@@ -273,9 +280,11 @@ def getinput():
         error("please input a A,B,C,D,E,F,G")
         return
     else:
-        if board[x - 1].get(y - 1).colour != board[z-1].get(board[z-1].getl()-1).colour:
-            if board[z-1].get(board[z-1].getl()-1).val(True) - 1 == board[x - 1].get(y - 1).val(True):
-                board[z - 1].add(board[x - 1].getcard(y - 1))
+        if legal(board[x-1].get(y-1), board[z-1].get(board[z-1].getl()-1)) == True:
+            board[z - 1].add(board[x - 1].getcard(y - 1))
+        # if board[x - 1].get(y - 1).colour != board[z-1].get(board[z-1].getl()-1).colour:
+        #     if board[z-1].get(board[z-1].getl()-1).val(True) - 1 == board[x - 1].get(y - 1).val(True):
+        #         board[z - 1].add(board[x - 1].getcard(y - 1))
         else:
             error("this is not a legal move")
             return
