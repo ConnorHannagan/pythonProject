@@ -59,7 +59,7 @@ class Deck:
     def shuffle(self):
         random.shuffle(self.cards)
 
-#
+#returns a card in a printatble form
     def veiwcard(self, position):
         if position <= 0:
             if len(self.cards) == 0:
@@ -79,6 +79,7 @@ class Deck:
         else:
             return " [ xxx ] "
 
+#returns a card class and removing it from the deck
     def getcard(self, position):
         if position > len(self.cards):
             return " "
@@ -87,6 +88,7 @@ class Deck:
             self.cards.pop(position)
             return temp
 
+#returns a card class without removing it from the deck
     def get(self, position):
         return self.cards[position]
 
@@ -201,6 +203,7 @@ def getinput():
         a = 0
         if userinpt == "1":
             if addfoundation(discardeck.get(discardeck.getl() - 1)) == True:
+                discardeck.getcard(discardeck.getl() - 1)
                 return
         else:
             error("you cannot place card there")
