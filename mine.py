@@ -30,6 +30,12 @@ class Card:
     def colour(self):
         return self.colour
 
+    def pcolour(self):
+        if self.colour == "black":
+            return "\033[0;30;47m"
+        if self.colour == "red":
+            return "\033[0;31;47m"
+
     def known(self):
         if self.know == True:
             return True
@@ -61,23 +67,24 @@ class Deck:
 
 #returns a card in a printatble form
     def veiwcard(self, position):
+        normal = "\033[0;37;40m"
         if position <= 0:
             if len(self.cards) == 0:
-                temp = " [ " + self.basestate + "  ] "
+                temp = "[ " + self.basestate + "  ]"
                 return temp
 
         if position > len(self.cards) - 1:
-            return "         "
+            return normal + "       "
 
         elif self.cards[position].known == True:
             temp = self.cards[position]
             if temp.val(True) != 10:
-                temp = " [ " + temp.suite() + str(temp.val(False)) + "  ] "
+                temp = temp.pcolour() +"[ " + temp.suite() + str(temp.val(False)) + "  ]"+ normal
             else:
-                temp = " [ " + temp.suite() + str(temp.val(False)) + " ] "
+                temp = temp.pcolour() + "[ " + temp.suite() + str(temp.val(False)) + " ]" +normal
             return temp
         else:
-            return " [ xxx ] "
+            return normal + "\033[0;27;44m"+"[ xxx ]"+normal
 
 #returns a card class and removing it from the deck
     def getcard(self, position):
@@ -104,6 +111,7 @@ class Deck:
 
 
 def displayboard():
+    normal = "\033[0;37;40m"
     # printing off foundation numbering
     for i in range(28):
         print(" ", end='')
@@ -112,10 +120,10 @@ def displayboard():
     print("")
 
     # prints off top row
-    print("", drawdeck.veiwcard(0), end='')
-    print(discardeck.veiwcard(discardeck.getl() - 1), "        ", end='')
+    print("", drawdeck.veiwcard(0),normal, end='  ')
+    print(discardeck.veiwcard(discardeck.getl() - 1),normal, "         ", end='')
     for i in range(len(foundations)):
-        print(foundations[i].veiwcard(foundations[i].getl()-1), end='')
+        print(foundations[i].veiwcard(foundations[i].getl()-1),normal, end=' ')
     print("")
     print(" ", end='')
 
@@ -126,7 +134,7 @@ def displayboard():
     for i in range(findmax()):
         print(i + 1, end='')  # left side numbers
         for a in range(7):
-            print(board[a].veiwcard(i), end='')
+            print("",board[a].veiwcard(i), end=' ')
         print(" ", i + 1)  # right side numbers
 
 
@@ -141,7 +149,7 @@ def createboard():
         board.append(Deck())
 
     drawdeck.create()  # creates a full deck in our draw deck
-    # drawdeck.shuffle()  #shuffles draw deck
+    drawdeck.shuffle()  #shuffles draw deck
 
     for i in range(7):  # creates Tableau
         for b in range(7):  # populates the card
@@ -152,9 +160,12 @@ def createboard():
 
 
 def legal(first, placing):
-
     if first.colour != placing.colour:
+        print("twooo")
+        print(first.val(True))
+        print(placing.val(True) + 1)
         if first.val(True) == placing.val(True) + 1:
+            print("huh?")
             return True
         else:
             return False
@@ -317,8 +328,13 @@ def getinput():
                 return
 
         # if you are moving a card ontop of another card, it will check if its legal then moves the card. if the move is not legal it will inform the user
-        if legal(board[x - 1].get(y - 1), board[z - 1].get(board[z - 1].getl() - 1)) == True:
+        if legal(board[z - 1].get(board[z - 1].getl() - 1),board[x - 1].get(y - 1)) == True:
             board[z - 1].add(board[x - 1].getcard(y - 1))
+            try:
+                while True:
+                    board[z - 1].add(board[x - 1].getcard(y - 1))
+            except:
+                return
         else:
             error("this is not a legal move")
             return
