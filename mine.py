@@ -96,10 +96,6 @@ class Deck:
         self.cards.append(card)
         return ()
 
-    def print(self):
-        for i in self.cards:
-            print(i.value(False), i.suit(), i.colour())
-
     def getl(self):
         return len(self.cards)
 
@@ -119,7 +115,7 @@ def displayboard():
     print("", drawdeck.veiwcard(0), end='')
     print(discardeck.veiwcard(discardeck.getl() - 1), "        ", end='')
     for i in range(len(foundations)):
-        print(foundations[i].veiwcard(0), end='')
+        print(foundations[i].veiwcard(foundations[i].getl()-1), end='')
     print("")
     print(" ", end='')
 
@@ -156,6 +152,7 @@ def createboard():
 
 
 def legal(first, placing):
+
     if first.colour != placing.colour:
         if first.val(True) == placing.val(True) + 1:
             return True
@@ -169,15 +166,16 @@ def addfoundation(card):
             if foundations[i - 1].getl() == 0:  # checks to see if foundations are empty
                 foundations[i - 1].add(card)  # if foundation is empty, it populates it with the card
                 return True
-    else:  # if the card is not an ace it will return an error for the user to do another move
-        error("")
+    else:
+        for i in range(len(foundations)):  # checks all the foundations
+            if foundations[i - 1].getl() > 0:  # sees if they are populated
+                if foundations[i - 1].get(foundations[i - 1].getl()-1).suite() == card.suite():  # if populated checks to see if its the same suite
+                    if foundations[i - 1].get(foundations[i-1].getl()-1).val(True)+1 == card.val(True):
+                        foundations[i - 1].add(card)
+                        return True
         return False
 
-    for i in range(len(foundations)):  # checks all the foundations
-        if foundations[i - 1].getl() > 0:  # sees if they are populated
-            if foundations[i - 1].get(foundations[i - 1].getl()).suite == card.suite:  # if populated checks to see if its the same suite
-                foundations[i - 1].add(card)
-                return True
+
 
 def getinput():
     userinpt = input("please select the pile you want to pick up from (A,B,C,D,E,F,G)\n\nor\n1) Draw\n2) Pickup from draw pile\n3) Pick up from foundations\n").upper()
@@ -196,9 +194,11 @@ def getinput():
 
         if discardeck.getl() == 0:
             clear()
-            input("draw deck is empty \n\n\nenter to continue")
+            error("enter to continue")
             return
+
         print(discardeck.veiwcard(discardeck.getl() - 1)) #displays the card so the player is sure of what they are moving
+
         userinpt = input("select the pile you want to place it on (A,B,C,D,E,F,G)\nor\n1) Place into foundations\n").upper()
         a = 0
         if userinpt == "1":
@@ -206,25 +206,27 @@ def getinput():
                 discardeck.getcard(discardeck.getl() - 1)
                 return
         else:
-            error("you cannot place card there")
-        for i in ("A", "B", "C", "D", "E", "F", "G"):
-            a += 1
-            if userinpt == i:
-                z = a
-                a = True
-                break
-        if a != True:
-            error("please input a valid input")
-            return
-        if legal(board[z-1].get(board[z-1].getl()-1), discardeck.get(discardeck.getl() - 1)) == True:
-            board[z-1].add(discardeck.getcard(discardeck.getl() - 1))
-            return
-        elif board[z-1].getl() == 0:
-            board[z-1].add(discardeck.getcard(discardeck.getl() - 1))
-            return
-        else:
-            error("not a legal move")
-            return
+            for i in ("A", "B", "C", "D", "E", "F", "G"):
+                a += 1
+                if userinpt == i:
+                    z = a
+                    a = True
+                    break
+            if a != True:
+                error("please input a valid input 1")
+                return
+
+
+            if board[z-1].getl() == 0:
+                if discardeck.get(discardeck.getl()-1).val(True) == 13:
+                    board[z-1].add(discardeck.getcard(discardeck.getl() - 1))
+                    return
+            elif legal(board[z-1].get(board[z-1].getl()-1), discardeck.get(discardeck.getl() - 1)) == True:
+                board[z-1].add(discardeck.getcard(discardeck.getl() - 1))
+                return
+            else:
+                error("not a legal move")
+                return
 
     if userinpt == "3":
         userinpt = input("what foundation do you want to get a card from, 1,2,3,4")
@@ -262,7 +264,7 @@ def getinput():
             a = True  # lets us know that the answer has been found
             break
     if a != True:  # if the input is not valid, tells the user and starts back from the start
-        error("please input a valid input - 1231")
+        error("please input a valid input")
         return
 
     try:  # if anything goes wrong, it will get the user to start again, as the input was not valid
