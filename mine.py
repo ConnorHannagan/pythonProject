@@ -182,6 +182,35 @@ def getinput():
         board[z-1].add(discardeck.getcard(discardeck.getl()-1))
         return
 
+    if userinpt == "3":
+        userinpt = input("what foundation do you want to get a card from, 1,2,3,4")
+        x = 0
+        for i in ("1","2","3","4"):
+            x += 1
+            if userinpt == i:
+
+                if foundations[x-1].getl() > 0:
+                    print(foundations[x-1].veiwcard(foundations[x-1].getl()-1))
+                    userinpt = input("select the pile you want to place it on (A,B,C,D,E,F,G\n")
+                    for i in ("A", "B", "C", "D", "E", "F", "G"):
+                        a += 1
+                        if userinpt == i:
+                            z = a
+                            a = True
+                            break
+                    if a != True:
+                        error("please input a A,B,C,D,E,F,G")
+                    else:
+                        if foundations[x - 1].get(foundations[x-1].colour != board[z-1].get(board[z-1].getl()-1).colour):
+                            if foundations[x - 1].get(foundations[x-1].getl()).val(True) != board[z-1].get(board[z-1].getl()-1).val(True):
+                                board[z-1].add(foundations[x-1].getcard())
+                        else:
+                            error("this is not a legal move")
+                            return
+                        return
+
+
+
 
     for i in ("A", "B", "C", "D", "E", "F", "G"):
         a += 1
