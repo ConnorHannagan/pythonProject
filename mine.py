@@ -109,7 +109,7 @@ def displayboard():
     for i in ("A","B","C","D","E","F","G"):
         print ("   ", i, "   ", end = "")
     print("")
-    for i in range(7):
+    for i in range(findmax()):
         print(i+1, end= '') #left side numbers
         for a in range(7):
             print(board[a].veiwcard(i), end='')
@@ -176,15 +176,17 @@ def getinput():
         a += 1
         if userinpt == i:
             x = a
-            a = True
+            a = True #lets us know that the answer has been found
             break
-    if a != True:
+    if a != True: #if the input is not valid, tells the user and starts back from the start
         error("please input a valid input")
         return
-    try:
+
+
+    try: # if anything goes wrong, it will get the user to start again, as the input was not valid
         print("please select the card from 1 -", board[x-1].getl())
         userinpt = input()
-        for i in range(8):
+        for i in range(findmax()+1):
             if userinpt == str(i):
                 if board[x-1].getl() < i:
                     error("please input a card that exists")
