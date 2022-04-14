@@ -7,45 +7,47 @@ class Card:
         self.known = False
         self.value = Value
         self.suit = Suit
-        if self.suit == "♠" or self.suit == "♣":
+
+        if self.suit == "♠" or self.suit == "♣": #sets the colour of the card to black if suite is spades, or clubs
             self.colour = "black"
-        elif self.suit == "♥" or self.suit == "♦":
+
+        elif self.suit == "♥" or self.suit == "♦": #sets the colour of the card to red if the suite is hearts or diamonds
             self.colour = "red"
 
-    def val(self, truenumber):
-        if truenumber == True:
+    def val(self, truenumber): #returns the value itself
+        if truenumber == True: #returns the true value of the card
             return self.value
         else:
             if self.value > 10:
-                special = ["J", "Q", "K"]
+                special = ["J", "Q", "K"] # if the card has a value of 11, 12, 13 it returns, jack queen or king
                 return special[self.value - 11]
-            elif self.value == 1:
+            elif self.value == 1: # if the card has a value of 1 it returns ace
                 return "a"
             else:
-                return self.value
+                return self.value    # if card is over 1 but under 11 i will return the orginal value
 
-    def suite(self):
+    def suite(self): # returns the suite of the card
         return self.suit
 
-    def colour(self):
+    def colour(self): # returns the colour of the card defined at the start if the class
         return self.colour
 
-    def pcolour(self):
+    def pcolour(self):  # returns the "print" color.
         if self.colour == "black":
             return "\033[0;30;47m"
         if self.colour == "red":
             return "\033[0;31;47m"
 
-    def known(self):
+    def known(self): #returns wether or not the card is known
         if self.know == True:
             return True
         else:
             return False
 
-    def hide(self):
+    def hide(self):  # makes a True known value False
         self.known = False
 
-    def flip(self):
+    def flip(self): #makes a Flase known value true
         self.known = True
 
 
@@ -120,7 +122,7 @@ def displayboard():
     print("")
 
     # prints off top row
-    print("", drawdeck.veiwcard(0),normal, end='  ')
+    print("  ", drawdeck.veiwcard(0),normal, end=' ')
     print(discardeck.veiwcard(discardeck.getl() - 1),normal, "         ", end='')
     for i in range(len(foundations)):
         print(foundations[i].veiwcard(foundations[i].getl()-1),normal, end=' ')
@@ -128,11 +130,17 @@ def displayboard():
     print(" ", end='')
 
     # printing off lettering of the 7 piles
+    print(" ", end='')
     for i in ("A", "B", "C", "D", "E", "F", "G"):
         print("   ", i, "   ", end="")
     print("")
     for i in range(findmax()):
-        print(i + 1, end='')  # left side numbers
+        if i >= 9:
+            temp = i +1
+        else:
+            temp = str(i + 1) + " "
+
+        print(temp, end='')  # left side numbers
         for a in range(7):
             print("",board[a].veiwcard(i), end=' ')
         print(" ", i + 1)  # right side numbers
@@ -148,7 +156,7 @@ def createboard():
     for i in range(7):  # populates the Board array with our decks
         board.append(Deck())
     drawdeck.create()  # creates a full deck in our draw deck
-    drawdeck.shuffle()  #shuffles draw deck
+    # drawdeck.shuffle()  #shuffles draw deck
 
     for i in range(7):  # creates Tableau
         for b in range(7):  # populates the card
@@ -186,7 +194,7 @@ def addfoundation(card):
 
 
 def getinput():
-    userinpt = input("please select the pile you want to pick up from (A,B,C,D,E,F,G)\n\nor\n1) Draw\n2) Pickup from draw pile\n3) Pick up from foundations\n").upper()
+    userinpt = input("\nplease select the pile you want to pick up from (A,B,C,D,E,F,G)\nor entre \n1) Draw\n2) Pickup from draw pile\n3) Pick up from foundations\n").upper()
     a = 0
     if userinpt == "1":
         if drawdeck.getl() == 0:
@@ -207,7 +215,7 @@ def getinput():
 
         print(discardeck.veiwcard(discardeck.getl() - 1)) #displays the card so the player is sure of what they are moving
 
-        userinpt = input("select the pile you want to place it on (A,B,C,D,E,F,G)\nor\n1) Place into foundations\n").upper()
+        userinpt = input("\nselect the pile you want to place it on (A,B,C,D,E,F,G)\nor\n1) Place into foundations\n").upper()
         a = 0
         if userinpt == "1":
             if addfoundation(discardeck.get(discardeck.getl() - 1)) == True:
@@ -256,14 +264,20 @@ def getinput():
                         error("please input a A,B,C,D,E,F,G")
                         return
                     else:
-                        if legal(board[z - 1].get(board[z - 1].getl() - 1),
-                                 foundations[x - 1].get(foundations[x - 1].getl() - 1)) == True:
-                            board[z - 1].add(foundations[x - 1].getcard(foundations[x - 1].getl() - 1))
-                            return
+                        if board[z-1].getl() == 0:
+                            if foundations[x-1].get(foundations[x-1].getl()-1).val(True) == 13:
+                                board[z - 1].add(foundations[x - 1].getcard(foundations[x - 1].getl() - 1))
+                            else:
+                                error("can only place king there")
+                                return
                         else:
-                            error("this is not a legal move")
+                            if legal(board[z - 1].get(board[z - 1].getl() - 1),foundations[x - 1].get(foundations[x - 1].getl() - 1)) == True:
+                                board[z - 1].add(foundations[x - 1].getcard(foundations[x - 1].getl() - 1))
+                                return
+                            else:
+                                error("this is not a legal move")
+                                return
                             return
-                        return
 
     for i in ("A", "B", "C", "D", "E", "F", "G"):
         a += 1
@@ -299,12 +313,13 @@ def getinput():
     a = 0
 
     if userinpt == "1":  # places into foundation
-        if addfoundation(board[x - 1].get(y - 1)) == True:
-            board[x-1].getcard(y-1)
-            return
-        else:
-            error("cannot move into foundations") #if you canot place into foundations it will
-            return
+        if board[x-1].getl() == y:
+            if addfoundation(board[x - 1].get(y - 1)) == True:
+                board[x-1].getcard(y-1)
+                return
+            else:
+                error("cannot move into foundations") #if you canot place into foundations it will
+                return
 
     for i in ("A", "B", "C", "D", "E", "F", "G"):
         a += 1
