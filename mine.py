@@ -168,7 +168,7 @@ def createboard():
     for i in range(7):  # populates the Board array with our decks
         board.append(Deck())
     drawdeck.create()  # creates a full deck in our draw deck
-    # drawdeck.shuffle()  #shuffles draw deck
+    drawdeck.shuffle()  #shuffles draw deck
 
     for i in range(7):  # creates Tableau
         for b in range(7):  # populates the card
